@@ -34,7 +34,7 @@ def RetrievalQAChain(llm, prompt, db):
 
 def LoadLLM():
     llm = CTransformers(
-        model = "TheBloke/Llama-2-7B-Chat-GGML",
+        model = "cognitivecomputations/dolphin-2.8-mistral-7b-v02",
         model_type="llama",
         max_new_tokens = 512,
         temperature = 0.5
@@ -42,7 +42,7 @@ def LoadLLM():
     return llm
 
 def LLamaQABot():
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",
+    embeddings = HuggingFaceEmbeddings(model_name="cognitivecomputations/dolphin-2.8-mistral-7b-v02",
                                        model_kwargs={'device': 'cpu'})
     db = FAISS.load_local(DB_FAISS_PATH,embeddings)
     llm = LoadLLM()
@@ -60,9 +60,9 @@ def GetAnswer(query):
 @cl.on_chat_start
 async def Start():
     chain=LLamaQABot()
-    message = cl.Message(content="Starting Medical Chat Bot...")
+    message = cl.Message(content="Starting SOCOM Ignite Chat Bot...")
     await message.send()
-    message.content = "Hi, Welcome to Medical Chat Bot. How may I help you?"
+    message.content = "Hi, Welcome to SOCOM Ignite Chat Bot. How may I help you?"
     await message.update()
 
     cl.user_session.set("chain", chain)
